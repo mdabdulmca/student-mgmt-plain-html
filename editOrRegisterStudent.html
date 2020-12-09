@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+  <body>
+
+    <div>
+      <label>Roll: </lable>
+      <input type=text id="roll">
+    </div>
+
+    <div>
+      <label>Name: </lable>
+      <input type=text id="name">
+    </div>
+    
+    <div>
+    	<input type=button id="editOrRegister" value="Register" onClick="editOrRegister()" />
+	</div>
+    
+    <script>
+    
+    	var edit_index = localStorage.getItem("edit_index");
+        if(edit_index) 
+        {
+        	
+            var existingArrayStr = localStorage.getItem("students");
+            var existingArray = JSON.parse(existingArrayStr);
+            var editStudent = existingArray[edit_index];
+            
+            document.getElementById("roll").value = editStudent.roll;
+            document.getElementById("name").value = editStudent.name;
+            document.getElementById("editOrRegister").value="edit";
+        }
+        else {
+        	document.getElementById("editOrRegister").value="Register";
+        }
+    
+    	function editOrRegister() {
+        
+        	var roll = document.getElementById("roll").value;
+            var name = document.getElementById("name").value;
+            
+            var student = {
+            	roll: roll,
+                name: name,
+            }
+            
+            var existingArrayStr = localStorage.getItem("students");
+            var existingArray = JSON.parse(existingArrayStr);
+            
+            if(!existingArray)
+            {
+            	existingArray = new Array();
+            }
+            
+           if(edit_index) 
+           {
+            	existingArray[edit_index] = student;
+                localStorage.removeItem("edit_index");
+           }
+           else {
+           	existingArray.push(student);
+           }
+            
+            
+            
+            console.log(existingArray);
+           
+            var studentsStr = JSON.stringify(existingArray);
+            
+            localStorage.setItem("students", studentsStr);
+            console.log(localStorage.getItem("students"));
+            
+        }
+    	
+    </script>
+    
+  </body>
+</html>
