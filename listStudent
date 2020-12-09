@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+	<table border="1px" id="table">
+    	<tr>
+         	<td>Roll No</td>
+            <td>Name</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+    </table>
+    
+   <script>
+   	var studentsStr = localStorage.getItem("students");
+    var studentsArray = JSON.parse(studentsStr);
+    
+    function populate() {
+    
+      for ( i = 0; i < studentsArray.length ; i++) {
+
+          var aRow = "<tr><td>" + studentsArray[i].roll + "</td><td>" + studentsArray[i].name + "</td><td><button onClick=edit(" + i + ")>Edit</button></td><td><button onClick=deleteStudent(" + i + ")>Delete</button></td></tr>";
+          var table = document.getElementById("table");
+          table.innerHTML += aRow;
+
+      }
+     }
+    
+    console.log(studentsArray);
+    populate();
+    
+    function edit(index) {
+    
+    	console.log("Edit called from " + index);
+        localStorage.setItem("edit_index", index);
+    }
+    
+    function deleteStudent(index) {
+    
+    	console.log("Delte called from " + index);
+        studentsArray.splice(index, 1);
+        localStorage.setItem("students", studentsArray);
+        
+        var table = document.getElementById("table");
+        table.innerHTML = "";
+        populate();
+        
+    }
+    
+   </script>
+
+</body>
+</html>
